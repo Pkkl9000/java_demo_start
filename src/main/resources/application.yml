@@ -7,7 +7,7 @@ spring:
     password: "0000"
     driverClassName: org.postgresql.Driver
   liquibase:
-    enabled: true
+    enabled: false
     change-log: db/changelog/db.changelog-master.xml
 
 logging:
