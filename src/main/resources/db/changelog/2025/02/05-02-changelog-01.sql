@@ -1,0 +1,3 @@
+ALTER TABLE transactions
+    ADD COLUMN transaction_id VARCHAR(255) NOT NULL UNIQUE,
+    ADD COLUMN status VARCHAR(50) NOT NULL;

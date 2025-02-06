@@ -17,3 +17,8 @@ logging:
 
 t1:
   scan-path: ru.t1.java.demo
+  transaction:
+    max-count: 5
+    time-window: 60000  # 60 секунд в миллисекундах
+
+
