@@ -61,26 +61,5 @@ public class AccountServiceImpl implements AccountService {
     public void deleteAccount(Long id) {
         accountRepository.deleteById(id);
     }
-
-    @Override
-    public void importAccountsFromCsv(File file) throws IOException {
-        List<Account> accounts = new ArrayList<>();
-
-        try (BufferedReader br = new BufferedReader(new FileReader(file))) {
-            String line;
-            while ((line = br.readLine()) != null) {
-                String[] values = line.split(",");
-                if (values.length == 3) {
-                    Account account = new Account();
-                    account.setClientId(Long.parseLong(values[0]));
-                    account.setAccountType(Account.AccountType.valueOf(values[1]));
-                    account.setBalance(Double.parseDouble(values[2]));
-                    accounts.add(account);
-                }
-            }
-        }
-
-        accountRepository.saveAll(accounts);
-    }
 }
 

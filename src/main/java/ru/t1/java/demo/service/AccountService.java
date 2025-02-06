@@ -19,6 +19,4 @@ public interface AccountService {
     Account updateAccount(Long id, Account accountDetails);
 
     void deleteAccount(Long id);
-
-    void importAccountsFromCsv(File file) throws IOException;
 }

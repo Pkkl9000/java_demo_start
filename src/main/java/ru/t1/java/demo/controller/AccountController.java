@@ -46,11 +46,4 @@ public class AccountController {
         accountService.deleteAccount(id);
         return ResponseEntity.noContent().build();
     }
-
-//    @PostMapping("/csv")
-//    public ResponseEntity<Void> doCsv() throws IOException {
-//        File file = new File("src/main/resources/MOCK_DATA_ACCOUNTS.csv");
-//        accountService.importAccountsFromCsv(file);
-//        return ResponseEntity.noContent().build();
-//    }
 }

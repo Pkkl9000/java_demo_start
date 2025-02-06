@@ -7,7 +7,7 @@ spring:
     password: "0000"
     driverClassName: org.postgresql.Driver
   liquibase:
-    enabled: false
+    enabled: true
     change-log: db/changelog/db.changelog-master.xml
 
 logging:
@@ -17,3 +17,8 @@ logging:
 
 t1:
   scan-path: ru.t1.java.demo
+  transaction:
+    max-count: 5
+    time-window: 60000  # 60 секунд в миллисекундах
+
+

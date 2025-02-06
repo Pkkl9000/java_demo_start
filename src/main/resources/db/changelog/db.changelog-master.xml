@@ -14,4 +14,19 @@ http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
         <rollback/>
     </changeSet>
 
+    <changeSet id="add-transaction-columns" author="PDmitriev">
+        <sqlFile encoding="utf8" path="/db/changelog/2025/02/05-02-changelog-01.sql"/>
+        <rollback/>
+    </changeSet>
+
+    <changeSet id="add-account-fields" author="PDmitriev">
+        <sqlFile encoding="utf8" path="/db/changelog/2024/09/05-02-changelog-02.sql"/>
+        <rollback/>
+    </changeSet>
+
+    <changeSet id="add-client-id" author="PDmitriev">
+        <sqlFile encoding="utf8" path="/db/changelog/2024/09/05-02-changelog-03.sql"/>
+        <rollback/>
+    </changeSet>
+
 </databaseChangeLog>

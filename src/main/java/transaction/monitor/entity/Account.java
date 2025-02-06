@@ -1,4 +1,4 @@
-package ru.t1.java.demo.entity;
+package transaction.monitor.entity;
 
 
 import jakarta.persistence.*;

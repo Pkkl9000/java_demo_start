@@ -1,9 +1,10 @@
-package ru.t1.java.demo.entity;
+package transaction.monitor.entity;
 
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
 
 @Entity
@@ -19,6 +20,9 @@ public class Transaction {
     @Column(name = "account_id", nullable = false)
     private Long accountId;
 
+    @Column(name = "client_id", nullable = false)
+    private Long clientId;
+
     @Column(name = "amount", nullable = false)
     private Double amount;
 
@@ -31,6 +35,10 @@ public class Transaction {
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
     private TransactionStatus status;
+
+    public Instant getTimestamp() {
+        return null;
+    }
 
     public enum TransactionStatus {
         ACCEPTED,
