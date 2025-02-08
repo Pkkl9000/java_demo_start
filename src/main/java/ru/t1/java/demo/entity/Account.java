@@ -4,6 +4,9 @@ package ru.t1.java.demo.entity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import ru.t1.java.demo.entity.enums.AccountType;
+
+import java.math.BigDecimal;
 
 
 @Entity
@@ -24,10 +27,5 @@ public class Account {
     private AccountType accountType;
 
     @Column(name = "balance", nullable = false)
-    private Double balance;
-
-    public enum AccountType {
-        DEBIT,
-        CREDIT
-    }
+    private BigDecimal balance;
 }

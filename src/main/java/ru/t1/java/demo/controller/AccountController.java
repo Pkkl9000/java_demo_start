@@ -1,29 +1,28 @@
 package ru.t1.java.demo.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.t1.java.demo.entity.Account;
+import ru.t1.java.demo.dto.AccountDto;
 import ru.t1.java.demo.service.AccountService;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/accounts")
+@RequiredArgsConstructor
 public class AccountController {
 
-    @Autowired
     private AccountService accountService;
 
     @GetMapping
-    public List<Account> getAllAccounts() {
+    public List<AccountDto> getAllAccounts() {
         return accountService.getAllAccounts();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Account> getAccountById(@PathVariable Long id) {
-        Account account = accountService.getAccountById(id);
-        return ResponseEntity.ok(account);
+    public AccountDto getAccountById(@PathVariable Long id) {
+        return accountService.getAccountById(id);
     }
 
     @ExceptionHandler(RuntimeException.class)
@@ -32,25 +31,17 @@ public class AccountController {
     }
 
     @PostMapping
-    public Account createAccount(@RequestBody Account account) {
+    public AccountDto createAccount(@RequestBody AccountDto account) {
         return accountService.createAccount(account);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Account> updateAccount(@PathVariable Long id, @RequestBody Account accountDetails) {
-        return ResponseEntity.ok(accountService.updateAccount(id, accountDetails));
+    public AccountDto updateAccount(@PathVariable Long id, @RequestBody AccountDto accountDetails) {
+        return accountService.updateAccount(id, accountDetails);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteAccount(@PathVariable Long id) {
+    public void deleteAccount(@PathVariable Long id) {
         accountService.deleteAccount(id);
-        return ResponseEntity.noContent().build();
     }
-
-//    @PostMapping("/csv")
-//    public ResponseEntity<Void> doCsv() throws IOException {
-//        File file = new File("src/main/resources/MOCK_DATA_ACCOUNTS.csv");
-//        accountService.importAccountsFromCsv(file);
-//        return ResponseEntity.noContent().build();
-//    }
 }

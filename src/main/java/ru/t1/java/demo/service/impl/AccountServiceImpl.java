@@ -1,80 +1,66 @@
 package ru.t1.java.demo.service.impl;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.t1.java.demo.aop.annotation.LogDataSourceError;
-import ru.t1.java.demo.entity.Account;
+import ru.t1.java.demo.dto.AccountDto;
+import ru.t1.java.demo.exception.EntityNotFoundException;
+import ru.t1.java.demo.mapper.DemoMapper;
 import ru.t1.java.demo.repository.AccountRepository;
 import ru.t1.java.demo.service.AccountService;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class AccountServiceImpl implements AccountService {
 
-    @Autowired
-    private AccountRepository accountRepository;
+    private final AccountRepository accountRepository;
+    private final DemoMapper demoMapper;
 
     @Override
     @LogDataSourceError
-    public List<Account> getAllAccounts() {
-        return accountRepository.findAll();
+    public List<AccountDto> getAllAccounts() {
+        return accountRepository.findAll()
+                .stream()
+                .map(demoMapper::accountToAccountDto)
+                .toList();
     }
 
     @Override
     @LogDataSourceError
-    public Account getAccountById(Long id) {
-        return accountRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Account with ID " + id + " not found"));
+    public AccountDto getAccountById(Long id) {
+        var account = accountRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Account not found with ID: " + id));
+        return demoMapper.accountToAccountDto(account);
     }
 
     @Override
     @LogDataSourceError
-    public Account createAccount(Account account) {
-        return accountRepository.save(account);
+    public AccountDto createAccount(AccountDto accountDto) {
+        var savedAccount = accountRepository.save(demoMapper.accountDtoToAccount(accountDto));
+        return demoMapper.accountToAccountDto(savedAccount);
     }
 
     @Override
     @LogDataSourceError
-    public Account updateAccount(Long id, Account accountDetails) {
-        Account account = accountRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Account not found"));
+    public AccountDto updateAccount(Long id, AccountDto accountDetails) {
+        var account = accountRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Account not found with ID: " + id));
         account.setClientId(accountDetails.getClientId());
         account.setAccountType(accountDetails.getAccountType());
         account.setBalance(accountDetails.getBalance());
-        return accountRepository.save(account);
+        var savedAccount = accountRepository.save(account);
+        return demoMapper.accountToAccountDto(savedAccount);
     }
 
     @Override
     @LogDataSourceError
     public void deleteAccount(Long id) {
-        accountRepository.deleteById(id);
+        var account = accountRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Account not found with ID: " + id));
+        accountRepository.delete(account);
     }
 
-    @Override
-    public void importAccountsFromCsv(File file) throws IOException {
-        List<Account> accounts = new ArrayList<>();
-
-        try (BufferedReader br = new BufferedReader(new FileReader(file))) {
-            String line;
-            while ((line = br.readLine()) != null) {
-                String[] values = line.split(",");
-                if (values.length == 3) {
-                    Account account = new Account();
-                    account.setClientId(Long.parseLong(values[0]));
-                    account.setAccountType(Account.AccountType.valueOf(values[1]));
-                    account.setBalance(Double.parseDouble(values[2]));
-                    accounts.add(account);
-                }
-            }
-        }
-
-        accountRepository.saveAll(accounts);
-    }
 }
 

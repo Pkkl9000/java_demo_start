@@ -1,6 +1,6 @@
 package ru.t1.java.demo.service.impl;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.t1.java.demo.entity.DataSourceErrorLog;
 import ru.t1.java.demo.repository.DataSourceErrorLogRepository;
@@ -9,9 +9,9 @@ import ru.t1.java.demo.service.DataSourceErrorLogService;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class DataSourceErrorLogServiceImpl implements DataSourceErrorLogService {
 
-    @Autowired
     private DataSourceErrorLogRepository errorLogRepository;
 
     @Override

@@ -1,24 +1,19 @@
 package ru.t1.java.demo.service;
 
-import ru.t1.java.demo.entity.Account;
-
-import java.io.File;
-import java.io.IOException;
+import ru.t1.java.demo.dto.AccountDto;
 import java.util.List;
 
 public interface AccountService {
 
-    public List<Account> getAllAccounts();
+    List<AccountDto> getAllAccounts();
 
     // Получение аккаунта по ID
-    Account getAccountById(Long id);
+    AccountDto getAccountById(Long id);
 
     // Создание нового аккаунта
-    Account createAccount(Account account);
+    AccountDto createAccount(AccountDto accountDto);
 
-    Account updateAccount(Long id, Account accountDetails);
+    AccountDto updateAccount(Long id, AccountDto accountDetails);
 
     void deleteAccount(Long id);
-
-    void importAccountsFromCsv(File file) throws IOException;
 }
