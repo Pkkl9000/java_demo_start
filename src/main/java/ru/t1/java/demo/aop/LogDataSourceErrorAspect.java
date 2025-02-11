@@ -1,6 +1,7 @@
 package ru.t1.java.demo.aop;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterThrowing;
 import org.aspectj.lang.annotation.Aspect;
@@ -12,6 +13,7 @@ import ru.t1.java.demo.service.DataSourceErrorLogService;
 import java.util.HashMap;
 import java.util.Map;
 
+@Slf4j
 @Aspect
 @Component
 @RequiredArgsConstructor
@@ -40,7 +42,7 @@ public class LogDataSourceErrorAspect {
 
         // Пытаемся отправить сообщение в Kafka
         try {
-            System.out.println("kafka: " + TOPIC_NAME + " " + ERROR_TYPE + " " + kafkaMessage);
+            log.error("kafka: {} {} {}", TOPIC_NAME, ERROR_TYPE, kafkaMessage);
             kafkaProducerService.sendErrorMessage(TOPIC_NAME, ERROR_TYPE, kafkaMessage);
         } catch (Exception kafkaException) {
             // Если отправка в Kafka не удалась, записываем ошибку в БД
