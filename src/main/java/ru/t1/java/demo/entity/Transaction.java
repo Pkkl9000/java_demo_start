@@ -3,6 +3,7 @@ package ru.t1.java.demo.entity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import ru.t1.java.demo.entity.enums.TransactionStatus;
 
 import java.time.LocalDateTime;
 
@@ -24,4 +25,12 @@ public class Transaction {
 
     @Column(name = "transaction_time", nullable = false)
     private LocalDateTime transactionTime;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status", nullable = false)
+    private TransactionStatus status;
+
+    @Column(name = "transaction_id", nullable = false, unique = true)
+    private String transactionId;
 }
+

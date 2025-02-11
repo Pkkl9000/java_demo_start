@@ -1,6 +1,8 @@
 package ru.t1.java.demo.service;
 
 import ru.t1.java.demo.dto.AccountDto;
+
+import java.math.BigDecimal;
 import java.util.List;
 
 public interface AccountService {
@@ -16,4 +18,6 @@ public interface AccountService {
     AccountDto updateAccount(Long id, AccountDto accountDetails);
 
     void deleteAccount(Long id);
+
+    AccountDto updateAccountBalance(Long id, BigDecimal newBalance);
 }

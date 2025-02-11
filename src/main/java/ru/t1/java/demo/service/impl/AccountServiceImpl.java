@@ -4,11 +4,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.t1.java.demo.aop.annotation.LogDataSourceError;
 import ru.t1.java.demo.dto.AccountDto;
+import ru.t1.java.demo.entity.Account;
 import ru.t1.java.demo.exception.EntityNotFoundException;
 import ru.t1.java.demo.mapper.DemoMapper;
 import ru.t1.java.demo.repository.AccountRepository;
 import ru.t1.java.demo.service.AccountService;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Service
@@ -61,6 +63,24 @@ public class AccountServiceImpl implements AccountService {
                 .orElseThrow(() -> new EntityNotFoundException("Account not found with ID: " + id));
         accountRepository.delete(account);
     }
+
+    @Override
+    @LogDataSourceError
+    public AccountDto updateAccountBalance(Long id, BigDecimal newBalance) {
+        // Поиск аккаунта по ID
+        Account account = accountRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Account not found with ID: " + id));
+
+        // Обновление баланса аккаунта
+        account.setBalance(newBalance);
+
+        // Сохранение обновленного аккаунта в БД
+        Account savedAccount = accountRepository.save(account);
+
+        // Преобразование сохраненного аккаунта в AccountDto и возврат
+        return demoMapper.accountToAccountDto(savedAccount);
+    }
+
 
 }
 
