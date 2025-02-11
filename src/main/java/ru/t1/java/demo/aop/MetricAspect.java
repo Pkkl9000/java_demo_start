@@ -1,6 +1,7 @@
 package ru.t1.java.demo.aop;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -11,6 +12,7 @@ import ru.t1.java.demo.kafka.KafkaProducerService;
 import java.util.HashMap;
 import java.util.Map;
 
+@Slf4j
 @Aspect
 @Component
 @RequiredArgsConstructor
@@ -25,14 +27,18 @@ public class MetricAspect {
         long startTime = System.currentTimeMillis();
 
         try {
-            return joinPoint.proceed(); // Выполнение целевого метода
-        } finally {
+            Object result = joinPoint.proceed();
             long endTime = System.currentTimeMillis();
             long executionTime = endTime - startTime;
 
-            if (executionTime > metric.timeout()) { // Проверка превышения допустимого времени
+            if (executionTime > metric.timeout()) {
                 sendMetricToKafka(joinPoint, executionTime);
             }
+
+            return result;
+        } catch (Exception e) {
+            log.error("Ошибка при выполнении метода {}: {}", joinPoint.getSignature().getName(), e.getMessage(), e);
+            throw e;
         }
     }
 

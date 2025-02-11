@@ -25,11 +25,6 @@ spring:
     listener:
       poll-timeout: 1000
 
-#transaction:
-#  threshold:
-#    count: 5
-#    time: PT1M # 1 минута (в формате ISO-8601)
-
 # Настройки для ограничения транзакций
 transaction:
   limit:
