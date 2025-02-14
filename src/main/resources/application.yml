@@ -9,11 +9,32 @@ spring:
   liquibase:
     enabled: true
     change-log: db/changelog/db.changelog-master.xml
+  kafka:
+    bootstrap-servers: localhost:9092
+    consumer:
+      group-id: t1-demo
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      max-poll-records: 10
+      properties:
+        session.timeout.ms: 10000
+        heartbeat.interval.ms: 3000
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+    listener:
+      poll-timeout: 1000
+
+# Настройки для ограничения транзакций
+transaction:
+  limit:
+    count: 5 # N - максимальное количество транзакций
+    time-window-seconds: 60 # T - временной период в секундах
+
 
 logging:
   level:
     ROOT: ${LOG_LEVEL:INFO}
     ru.t1.java.demo.controller.ClientController: DEBUG
 
-t1:
-  scan-path: ru.t1.java.demo
+

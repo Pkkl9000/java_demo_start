@@ -1,4 +1,4 @@
-package ru.t1.java.demo.model;
+package ru.t1.java.demo.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -15,6 +15,9 @@ import org.springframework.data.jpa.domain.AbstractPersistable;
 @Table(name = "client")
 public class Client extends AbstractPersistable<Long> {
 
+    @Column(name = "client_id", nullable = false, unique = true)
+    private String clientId;
+
     @Column(name = "first_name")
     private String firstName;
 
@@ -23,5 +26,4 @@ public class Client extends AbstractPersistable<Long> {
 
     @Column(name = "middle_name")
     private String middleName;
-
 }
